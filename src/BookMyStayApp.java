@@ -1,5 +1,4 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 class Reservation {
 
@@ -20,24 +19,80 @@ class Reservation {
     }
 }
 
-class BookingRequestQueue {
+class RoomInventory {
 
-    private Queue<Reservation> requestQueue;
+    private Map<String, Integer> roomAvailability;
 
-    public BookingRequestQueue() {
-        requestQueue = new LinkedList<>();
+    public RoomInventory() {
+        roomAvailability = new HashMap<>();
+
+        roomAvailability.put("Single", 2);
+        roomAvailability.put("Double", 2);
+        roomAvailability.put("Suite", 1);
     }
 
-    public void addRequest(Reservation reservation) {
-        requestQueue.add(reservation);
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
     }
 
-    public Reservation getNextRequest() {
-        return requestQueue.poll();
+    public void decreaseRoom(String roomType) {
+        int count = roomAvailability.get(roomType);
+        roomAvailability.put(roomType, count - 1);
+    }
+}
+
+class RoomAllocationService {
+
+    private Set<String> allocatedRoomIds;
+    private Map<String, Set<String>> assignedRoomsByType;
+
+    public RoomAllocationService() {
+        allocatedRoomIds = new HashSet<>();
+        assignedRoomsByType = new HashMap<>();
     }
 
-    public boolean hasPendingRequests() {
-        return !requestQueue.isEmpty();
+    public void allocateRoom(Reservation reservation, RoomInventory inventory) {
+
+        String roomType = reservation.getRoomType();
+
+        Map<String, Integer> availability = inventory.getRoomAvailability();
+
+        if (availability.get(roomType) > 0) {
+
+            String roomId = generateRoomId(roomType);
+
+            allocatedRoomIds.add(roomId);
+
+            assignedRoomsByType
+                    .computeIfAbsent(roomType, k -> new HashSet<>())
+                    .add(roomId);
+
+            inventory.decreaseRoom(roomType);
+
+            System.out.println(
+                    "Booking Confirmed for " +
+                            reservation.getGuestName() +
+                            " | Room Type: " +
+                            roomType +
+                            " | Room ID: " +
+                            roomId
+            );
+
+        } else {
+            System.out.println(
+                    "No " + roomType + " rooms available for " +
+                            reservation.getGuestName()
+            );
+        }
+    }
+
+    private String generateRoomId(String roomType) {
+
+        int number = assignedRoomsByType
+                .getOrDefault(roomType, new HashSet<>())
+                .size() + 1;
+
+        return roomType.substring(0,1).toUpperCase() + number;
     }
 }
 
@@ -45,28 +100,23 @@ public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        System.out.println("Booking Request Queue");
+        System.out.println("Room Allocation System\n");
 
-        BookingRequestQueue bookingQueue = new BookingRequestQueue();
+        RoomInventory inventory = new RoomInventory();
+        RoomAllocationService allocator = new RoomAllocationService();
 
-        Reservation r1 = new Reservation("Anil", "Single");
-        Reservation r2 = new Reservation("John", "Double");
-        Reservation r3 = new Reservation("Vasanth", "Suite");
+        Queue<Reservation> bookingQueue = new LinkedList<>();
 
-        bookingQueue.addRequest(r1);
-        bookingQueue.addRequest(r2);
-        bookingQueue.addRequest(r3);
+        bookingQueue.add(new Reservation("Anil", "Single"));
+        bookingQueue.add(new Reservation("John", "Double"));
+        bookingQueue.add(new Reservation("Vasanth", "Suite"));
+        bookingQueue.add(new Reservation("Ravi", "Single"));
 
-        while (bookingQueue.hasPendingRequests()) {
+        while (!bookingQueue.isEmpty()) {
 
-            Reservation current = bookingQueue.getNextRequest();
+            Reservation reservation = bookingQueue.poll();
 
-            System.out.println(
-                    "Processing Booking for " +
-                            current.getGuestName() +
-                            " | Room Type: " +
-                            current.getRoomType()
-            );
+            allocator.allocateRoom(reservation, inventory);
         }
     }
 }
