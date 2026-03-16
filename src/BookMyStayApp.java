@@ -1,25 +1,51 @@
-public abstract class BookMyStayApp {
+import java.util.HashMap;
+import java.util.Map;
 
-    protected int numberOfBeds;
-    protected int squareFeet;
-    protected double pricePerNight;
+class RoomInventory {
 
-    public BookMyStayApp(int numberOfBeds, int squareFeet, double pricePerNight) {
-        this.numberOfBeds = numberOfBeds;
-        this.squareFeet = squareFeet;
-        this.pricePerNight = pricePerNight;
+    private Map<String, Integer> roomAvailability;
+
+    public RoomInventory() {
+        initializeInventory();
     }
 
-    public void displayRoomDetails() {
-        System.out.println("Number of Beds: " + numberOfBeds);
-        System.out.println("Room Size (sq ft): " + squareFeet);
-        System.out.println("Price per Night: " + pricePerNight);
+    private void initializeInventory() {
+        roomAvailability = new HashMap<>();
+
+        roomAvailability.put("Standard", 10);
+        roomAvailability.put("Deluxe", 5);
+        roomAvailability.put("Suite", 2);
     }
+
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
+    }
+
+    public void updateAvailability(String roomType, int count) {
+        roomAvailability.put(roomType, count);
+    }
+}
+
+public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        BookMyStayApp room = new BookMyStayApp(2, 350, 2500.0) {};
+        RoomInventory inventory = new RoomInventory();
 
-        room.displayRoomDetails();
+        System.out.println("Room Inventory:");
+
+        for (Map.Entry<String, Integer> entry : inventory.getRoomAvailability().entrySet()) {
+            System.out.println(entry.getKey() + " Rooms Available: " + entry.getValue());
+        }
+
+        System.out.println("\nUpdating Deluxe room availability...");
+
+        inventory.updateAvailability("Deluxe", 7);
+
+        System.out.println("\nUpdated Inventory:");
+
+        for (Map.Entry<String, Integer> entry : inventory.getRoomAvailability().entrySet()) {
+            System.out.println(entry.getKey() + " Rooms Available: " + entry.getValue());
+        }
     }
 }
