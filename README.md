@@ -38,4 +38,5 @@ Add filters (price, location, ratings)
 Deploy as a live web app
 
 🙌 Acknowledgements
+
 Inspired by real-world platforms like Airbnb and Booking.com
