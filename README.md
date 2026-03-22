@@ -2,7 +2,7 @@
 
 📌 Project Overview
 
-BookMyStay is a web-based hotel booking application that allows users to search, explore, and book accommodations بسهولة. The project simulates real-world booking platforms and focuses on user experience, booking management, and responsive design.
+BookMyStay is a web-based hotel booking application that allows users to search, explore, and book accommodations easily. The project simulates real-world booking platforms and focuses on user experience, booking management, and responsive design.
 
 🚀 Features
 Browse available hotels and rooms
