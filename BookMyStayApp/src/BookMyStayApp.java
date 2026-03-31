@@ -71,11 +71,19 @@ class ReservationValidator {
 }
 
 class RoomAllocationService {
+
     private Map<String, Set<String>> assignedRoomsByType = new HashMap<>();
 
     public void allocateRoom(Reservation reservation, RoomInventory inventory) {
 
         String roomType = reservation.getRoomType();
+
+        if (!inventory.isAvailable(roomType)) {
+            System.out.println("No " + roomType + " rooms available for " +
+                    reservation.getGuestName());
+            return;
+        }
+
         String roomId = generateRoomId(roomType);
 
         assignedRoomsByType
@@ -95,7 +103,7 @@ class RoomAllocationService {
                 .getOrDefault(roomType, new HashSet<>())
                 .size() + 1;
 
-        return roomType.substring(0,1).toUpperCase() + number;
+        return roomType.substring(0, 1).toUpperCase() + number;
     }
 }
 
