@@ -137,15 +137,51 @@ class AddOnServiceManager {
     }
 }
 
+class BookingHistory {
+
+    private List<Reservation> confirmedReservations;
+
+    public BookingHistory() {
+        confirmedReservations = new ArrayList<>();
+    }
+
+    public void addReservation(Reservation reservation) {
+        confirmedReservations.add(reservation);
+    }
+
+    public List<Reservation> getAllReservations() {
+        return confirmedReservations;
+    }
+}
+
+class BookingReportService {
+
+    public void generateReport(BookingHistory history) {
+
+        System.out.println("\n--- Booking Report ---");
+
+        List<Reservation> list = history.getAllReservations();
+
+        for (Reservation r : list) {
+            System.out.println("Guest: " + r.getGuestName() +
+                    " | Room Type: " + r.getRoomType());
+        }
+
+        System.out.println("Total Bookings: " + list.size());
+    }
+}
+
 public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        System.out.println("Room Allocation + Add-On Services System\n");
+        System.out.println("Full Booking System\n");
 
         RoomInventory inventory = new RoomInventory();
         RoomAllocationService allocator = new RoomAllocationService();
         AddOnServiceManager serviceManager = new AddOnServiceManager();
+        BookingHistory history = new BookingHistory();
+        BookingReportService reportService = new BookingReportService();
 
         Queue<Reservation> bookingQueue = new LinkedList<>();
 
@@ -163,7 +199,6 @@ public class BookMyStayApp {
 
             allocator.allocateRoom(reservation, inventory);
 
-            // Adding services
             serviceManager.addService(reservationId, new AddOnService("Breakfast", 200));
             serviceManager.addService(reservationId, new AddOnService("WiFi", 100));
 
@@ -172,6 +207,10 @@ public class BookMyStayApp {
             System.out.println("Total Add-On Cost for " +
                     reservation.getGuestName() +
                     " = " + totalCost + "\n");
+
+            history.addReservation(reservation);
         }
+
+        reportService.generateReport(history);
     }
 }

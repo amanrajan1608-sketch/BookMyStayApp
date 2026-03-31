@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e46af3b2-d9fd-4e5e-b9dd-f3491cdff30d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Palindrome-Checker" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
@@ -45,7 +44,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/UC7",
+    "git-widget-placeholder": "develop",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/DELL/OneDrive/Desktop/AMAN IMPORTANT/AMAN IMPORTANT/STEP SEMESTER-4/BookMyStayApp",
@@ -90,7 +89,7 @@
       <workItem from="1773649320123" duration="5339000" />
       <workItem from="1774951197890" duration="637000" />
       <workItem from="1774951850824" duration="316000" />
-      <workItem from="1774952180636" duration="11000" />
+      <workItem from="1774952180636" duration="695000" />
     </task>
     <servers />
   </component>
